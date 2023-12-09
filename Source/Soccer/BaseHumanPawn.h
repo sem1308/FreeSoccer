@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
+#include "GameFramework/Character.h"
 #include "BaseHumanPawn.generated.h"
 
 UCLASS()
-class SOCCER_API ABaseHumanPawn : public APawn
+class SOCCER_API ABaseHumanPawn : public ACharacter
 {
 	GENERATED_BODY()
 
@@ -22,10 +22,4 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	USkeletalMeshComponent* GetMesh() const {return Mesh;}
-
-private:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"), Category="Component")
-	class USkeletalMeshComponent* Mesh;
 };
