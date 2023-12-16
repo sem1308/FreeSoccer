@@ -51,12 +51,13 @@ private:
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* TurnAction;
 
-	UPROPERTY(EditAnywhere, Category="Status")
-	float Speed = 500.f;
+	UPROPERTY(EditAnywhere, Category="Input")
+	UInputAction* LookUpAction;
 
 	UPROPERTY(EditAnywhere, Category="Status")
-	float RotationSpeed = 120.f;
+	float RotationSpeed = 45.f;
 
 	void Move(const FInputActionValue& Value);
 	void Turn(const FInputActionValue& Value);
+	void LookUp(const FInputActionValue& Value);
 };

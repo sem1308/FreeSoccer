@@ -26,6 +26,7 @@ void ASoccerPlayer::BeginPlay()
 
     if(APlayerController* PlayerController = Cast<APlayerController>(GetController()))
     {
+        AddControllerPitchInput(10);
         if(UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
         {
             Subsystem->AddMappingContext(InputMappingContext,0);
@@ -49,15 +50,14 @@ void ASoccerPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
     {
         EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ASoccerPlayer::Move);
         EnhancedInputComponent->BindAction(TurnAction, ETriggerEvent::Triggered, this, &ASoccerPlayer::Turn);
+        EnhancedInputComponent->BindAction(LookUpAction, ETriggerEvent::Triggered, this, &ASoccerPlayer::LookUp);
     }
 }
 
 
 void ASoccerPlayer::Move(const FInputActionValue& Value)
 {
-    FVector Val = Value.Get<FVector>();
-    Val.Normalize();
-    Val = Val * Speed * GetWorld()->GetDeltaSeconds();    
+    FVector Val = Value.Get<FVector>();   
 
     AddMovementInput(GetActorForwardVector(), Val.X);
     AddMovementInput(GetActorRightVector(), Val.Y);
@@ -65,9 +65,16 @@ void ASoccerPlayer::Move(const FInputActionValue& Value)
 
 void ASoccerPlayer::Turn(const FInputActionValue& Value)
 {
-    FVector2D Val = Value.Get<FVector2D>();
+    float Val = Value.Get<float>();
     Val = Val * RotationSpeed * GetWorld()->GetDeltaSeconds();
 
-    AddControllerYawInput(Val.X);
-    AddControllerPitchInput(Val.Y);
+    AddControllerYawInput(Val);
+}
+
+void ASoccerPlayer::LookUp(const FInputActionValue& Value)
+{
+    float Val = Value.Get<float>();
+    Val = Val * RotationSpeed * GetWorld()->GetDeltaSeconds();
+
+    AddControllerPitchInput(Val);
 }
